@@ -1,6 +1,9 @@
 const container = document.getElementById("container");
 let clock = new THREE.Clock();
 const gui = new dat.GUI();
+let isPaused = false,
+  elapsedResetTime = 21600,
+  elapsedPreviousTime = 0;
 let devicePixelRatio = window.devicePixelRatio || 1;
 
 let scene, camera, renderer, material;
@@ -95,10 +98,24 @@ function render() {
   }, 1000 / settings.fps);
 
   //reset every 6hr
-  if (clock.getElapsedTime() > 21600) clock = new THREE.Clock();
+  if (clock.getElapsedTime() > elapsedResetTime) clock = new THREE.Clock();
   material.uniforms.u_time.value = clock.getElapsedTime();
 
   renderer.render(scene, camera);
+}
+
+function livelyWallpaperPlaybackChanged(data) {
+  var obj = JSON.parse(data);
+  isPaused = obj.IsPaused;
+
+  if (isPaused) {
+    elapsedPreviousTime = clock.getElapsedTime();
+    elapsedPreviousTime = elapsedPreviousTime > elapsedResetTime ? 0 : elapsedPreviousTime;
+    clock.stop();
+  } else {
+    clock.start();
+    clock.elapsedTime = elapsedPreviousTime;
+  }
 }
 
 init();
