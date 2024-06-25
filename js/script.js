@@ -324,3 +324,58 @@ function disposeVideoElement(video) {
     video.load();
   }
 }
+
+// Music stuff
+
+const musicWidget = document.getElementById("music-widget");
+const albumart = document.getElementById("albumart");
+const headerTitle = document.getElementById("track-title");
+const headerArtist = document.getElementById("track-artist");
+const backgroundSrcDefault = "media/image.webp";
+const colorThief = new ColorThief();
+
+async function livelyCurrentTrack(data) {
+  let obj = JSON.parse(data);
+  //when no track is playing its null
+  if (obj != null) {
+    headerTitle.innerText = obj.Title;
+    headerArtist.innerText = obj.Artist;
+
+    if (obj.Thumbnail != null) {
+      const base64String = !obj.Thumbnail.startsWith("data:image/")
+        ? "data:image/png;base64," + obj.Thumbnail
+        : obj.Thumbnail;
+
+      albumart.src = base64String;
+    } else {
+      albumart.src = backgroundSrcDefault;
+    }
+
+    musicWidget.style.opacity = 1;
+  } else {
+    musicWidget.style.opacity = 0;
+  }
+}
+
+function setColor(mainColor, shadowColor) {
+  document.documentElement.style.setProperty("--mainColor", mainColor); //highest contrast compared to dominant color
+  document.documentElement.style.setProperty("--shadowColor", shadowColor); //dominant color
+  if (material != null) material.uniforms.u_center_color.value = new THREE.Color(shadowColor);
+}
+
+albumart.addEventListener("load", function () {
+  let color = colorThief.getPalette(albumart, 6);
+  color.unshift(colorThief.getColor(albumart));
+
+  let mainColor = `rgb(${color[1].toString()}`; //assume
+  let minc = -999;
+  for (let i = 1; i < color.length; i++) {
+    let tmp = contrast(color[0], color[i]);
+    if (tmp > minc) {
+      minc = tmp;
+      mainColor = `rgb(${color[i].toString()}`;
+    }
+  }
+
+  setColor(mainColor, `rgb(${color[0].toString()})`);
+});

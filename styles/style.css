@@ -1,3 +1,9 @@
+
+:root {
+  --mainColor: #000;
+  --shadowColor: #fff;
+}
+
 body {
   background-color: #000;
   margin: 0px;
@@ -14,6 +20,50 @@ body {
   z-index: -10;
   opacity: 0; /*set to 1 after sceneLoaded event*/
 }
+
+#music-widget {
+  display: flex;
+  opacity: 0;
+  position: absolute;
+  top: 30px;
+  left: 40px;
+  z-index: 1;
+}
+
+#track-details {
+  margin-top: 60px;
+  margin-left: 20px;
+  max-width: 800px; /* Adjust the max-width as needed */
+  text-align: left;
+}
+
+#albumart {
+  border: solid 1px rgb(0 0 0 / 50%);
+  width: 8vw;
+  height: 8vw;
+  box-shadow: 3px 3px 18px var(--shadowColor);
+  border-radius: 2.5%;
+}
+
+#track-title {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 5px 0 0 0;
+  color: var(--mainColor);
+  text-shadow: 1px 0px 10px var(--shadowColor);
+}
+
+#track-artist {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 5px 0 0 0;
+  opacity: 0.75;
+  color: var(--mainColor);
+  text-shadow: 1px 0px 10px var(--shadowColor);
+}
+
+.fade-transition {
+  transition: opacity 1s ease;
+}
+
 
 /*loading progressbar*/
 .indeterminate-progress-bar {
