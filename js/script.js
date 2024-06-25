@@ -331,7 +331,7 @@ const musicWidget = document.getElementById("music-widget");
 const albumart = document.getElementById("albumart");
 const headerTitle = document.getElementById("track-title");
 const headerArtist = document.getElementById("track-artist");
-const backgroundSrcDefault = "media/image.webp";
+const backgroundSrcDefault = "media/wallpaper.jpg";
 const colorThief = new ColorThief();
 
 async function livelyCurrentTrack(data) {
@@ -360,11 +360,10 @@ async function livelyCurrentTrack(data) {
 function setColor(mainColor, shadowColor) {
   document.documentElement.style.setProperty("--mainColor", mainColor); //highest contrast compared to dominant color
   document.documentElement.style.setProperty("--shadowColor", shadowColor); //dominant color
-  if (material != null) material.uniforms.u_center_color.value = new THREE.Color(shadowColor);
 }
 
 albumart.addEventListener("load", function () {
-  let color = colorThief.getPalette(albumart, 6);
+  let color = colorThief.getPalette(albumart, 0);
   color.unshift(colorThief.getColor(albumart));
 
   let mainColor = `rgb(${color[1].toString()}`; //assume
@@ -378,4 +377,21 @@ albumart.addEventListener("load", function () {
   }
 
   setColor(mainColor, `rgb(${color[0].toString()})`);
+  // setColor(`rgb(${color[0].toString()})`, mainColor);
 });
+
+function contrast(rgb1, rgb2) {
+  var lum1 = luminance(rgb1[0], rgb1[1], rgb1[2]);
+  var lum2 = luminance(rgb2[0], rgb2[1], rgb2[2]);
+  var brightest = Math.max(lum1, lum2);
+  var darkest = Math.min(lum1, lum2);
+  return (brightest + 0.05) / (darkest + 0.05);
+}
+
+function luminance(r, g, b) {
+  var a = [r, g, b].map(function (v) {
+    v /= 255;
+    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+  });
+  return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+}
