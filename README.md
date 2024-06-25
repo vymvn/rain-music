@@ -1,11 +1,11 @@
+# Fork additions
+
+This fork adds a little music indicator in the top left
+
 # Rainy Window
 <img src="preview.gif" width="300" />
 
 Animated Rainy Window wallpaper for [Lively Wallpaper](https://github.com/rocksdanister/lively)
-
-[Download](https://github.com/rocksdanister/rain/releases)
-
-[Live Demo](https://www.rocksdanister.com/rain)
 
 #### Features
 - Custom image or video background.
@@ -15,3 +15,4 @@ Animated Rainy Window wallpaper for [Lively Wallpaper](https://github.com/rocksd
 - Background mouse parallax.
 - Background blur.
 - Framerate control.
+- Music widget
